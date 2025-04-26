@@ -2,17 +2,25 @@
     "version": 2,
     "builds": [
         {
-            "src": "server.py",
+            "src": "vercel_app.py",
             "use": "@vercel/python"
+        },
+        {
+            "src": "static/**",
+            "use": "@vercel/static"
         }
     ],
     "routes": [
         {
+            "src": "/static/(.*)",
+            "dest": "/static/$1"
+        },
+        {
             "src": "/(.*)",
-            "dest": "server.py"
+            "dest": "vercel_app.py"
         }
     ],
     "env": {
-        "BACKEND_API_URL": "https://your-backend-url.railway.app"
+        "BACKEND_API_URL": "https://agro-nexus-backend.onrender.com"
     }
 } 
