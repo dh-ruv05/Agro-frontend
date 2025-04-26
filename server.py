@@ -22,7 +22,7 @@ def check_backend_health():
 @app.route('/')
 def index():
     backend_healthy = check_backend_health()
-    return render_template('index.html', api_url=BACKEND_API_URL, backend_healthy=backend_healthy)
+    return render_template('landingPage.html', api_url=BACKEND_API_URL, backend_healthy=backend_healthy)
 
 @app.route('/login')
 def login():
@@ -38,7 +38,7 @@ def disease():
 
 @app.route('/crop_recom')
 def crop_recom():
-    return render_template('crop_recom.html', api_url=BACKEND_API_URL)
+    return render_template('index.html', api_url=BACKEND_API_URL)
 
 @app.route('/track')
 def track():
