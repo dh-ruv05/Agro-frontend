@@ -32,11 +32,11 @@ def login():
 def signup():
     return render_template('signup.html', api_url=BACKEND_API_URL)
 
-@app.route('/disease')
+@app.route('/submit')
 def disease():
     return render_template('disease.html', api_url=BACKEND_API_URL)
 
-@app.route('/crop_recom')
+@app.route('/crop_rec')
 def crop_recom():
     return render_template('index.html', api_url=BACKEND_API_URL)
 
@@ -52,7 +52,7 @@ def user_profile():
 def seeds():
     return render_template('seeds.html', api_url=BACKEND_API_URL)
 
-@app.route('/price')
+@app.route('/predict_price')
 def price():
     return render_template('price.html', api_url=BACKEND_API_URL)
 
