@@ -49,7 +49,7 @@ def seeds():
 
 @app.route('/predict_price')
 def price():
-    return render_template('price.html')
+    return render_template('price.html')   #predict price page
 
 @app.route('/problems_solved')
 def problems():
