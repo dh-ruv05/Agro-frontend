@@ -5,10 +5,13 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, 
+           static_folder='static',
+           template_folder='templates')
 
 @app.route('/')
 def index():
+    # This should show the landing page
     return render_template('landingPage.html')
 
 @app.route('/login')
@@ -29,6 +32,7 @@ def disease():
 
 @app.route('/crop_rec')
 def crop_recom():
+    # This route should show the crop recommendation page (index.html)
     return render_template('index.html')
 
 @app.route('/track')
@@ -66,6 +70,9 @@ def not_found_error(error):
 @app.errorhandler(500)
 def internal_error(error):
     return render_template('500.html'), 500
+
+# This is important for Vercel deployment
+app.debug = True
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 3000))
