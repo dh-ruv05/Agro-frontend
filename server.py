@@ -21,12 +21,15 @@ def check_backend_health():
 
 @app.route('/')
 def index():
-    backend_healthy = check_backend_health()
-    return render_template('landingPage.html', api_url=BACKEND_API_URL, backend_healthy=backend_healthy)
+    # backend_healthy = check_backend_health()
+    return render_template('landingPage.html', api_url=BACKEND_API_URL)
 
 @app.route('/login')
 def login():
     return render_template('login.html', api_url=BACKEND_API_URL)
+@app.route('/home')
+def home():
+    return render_template('home.html', api_url=BACKEND_API_URL)
 
 @app.route('/signup')
 def signup():
@@ -56,7 +59,7 @@ def seeds():
 def price():
     return render_template('price.html', api_url=BACKEND_API_URL)
 
-@app.route('/problems')
+@app.route('/problems_solved')
 def problems():
     return render_template('problems.html', api_url=BACKEND_API_URL)
 
