@@ -2,11 +2,15 @@
     "version": 2,
     "builds": [
         {
-            "src": "vercel_app.py",
+            "src": "server.py",
             "use": "@vercel/python"
         },
         {
             "src": "static/**",
+            "use": "@vercel/static"
+        },
+        {
+            "src": "templates/**",
             "use": "@vercel/static"
         }
     ],
@@ -17,7 +21,7 @@
         },
         {
             "src": "/(.*)",
-            "dest": "vercel_app.py"
+            "dest": "/server.py"
         }
     ],
     "env": {
