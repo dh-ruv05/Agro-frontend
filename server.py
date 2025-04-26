@@ -2,6 +2,7 @@ from flask import Flask, render_template, send_from_directory, jsonify
 import os
 from dotenv import load_dotenv
 import requests
+from requests.exceptions import RequestException
 
 # Load environment variables
 load_dotenv()
@@ -11,9 +12,17 @@ app = Flask(__name__)
 # Get backend API URL from environment variable with fallback
 BACKEND_API_URL = os.getenv('BACKEND_API_URL', 'http://localhost:5000')
 
+def check_backend_health():
+    try:
+        response = requests.get(f"{BACKEND_API_URL}/test", timeout=5)
+        return response.ok
+    except RequestException:
+        return False
+
 @app.route('/')
 def index():
-    return render_template('index.html', api_url=BACKEND_API_URL)
+    backend_healthy = check_backend_health()
+    return render_template('index.html', api_url=BACKEND_API_URL, backend_healthy=backend_healthy)
 
 @app.route('/login')
 def login():
@@ -62,17 +71,36 @@ def simple_irrigation():
 @app.route('/health')
 def health_check():
     try:
-        # Check backend health
-        response = requests.get(f"{BACKEND_API_URL}/test")
+        # Check backend health with timeout
+        response = requests.get(f"{BACKEND_API_URL}/test", timeout=5)
         return jsonify({
             "status": "healthy",
-            "backend_status": response.json()
+            "frontend_version": "1.0.0",
+            "backend_status": response.json() if response.ok else "unavailable"
         })
+    except RequestException as e:
+        return jsonify({
+            "status": "partially healthy",
+            "frontend_version": "1.0.0",
+            "backend_status": "unavailable",
+            "error": str(e)
+        }), 200  # Still return 200 as frontend is working
     except Exception as e:
         return jsonify({
             "status": "unhealthy",
             "error": str(e)
         }), 500
+
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    return render_template('500.html'), 500
+
+# Create the app instance
+app = app
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 3000))
